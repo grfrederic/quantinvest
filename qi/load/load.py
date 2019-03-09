@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.interpolate import interp1d
 from config import FUNDS
 
 
@@ -8,21 +9,23 @@ def load_data(split=(8, 1, 1)):
     data = pd.read_csv(FUNDS)
     data.sort_values("time", inplace=True)
 
-    data = np.array(data)
-    diff = data[1:] - data[:-1]            # difference table
-    dxdt = (diff[:, 1:].T / diff[:, 0]).T  # dx / dt
+    time = np.array(data["time"])
+    vals = np.array(data.loc[:, data.columns != "time"])
 
-    norm = dxdt - np.mean(dxdt, axis=0)
-    norm = norm / np.sqrt(np.mean(norm*norm, axis=0))
+    # interpolation
+    inter_fn = interp1d(time, vals.T)
+
+    time = np.arange(np.min(time), np.max(time))
+    vals = inter_fn(time).T
 
     s = sum(split)
-    n = len(data)
+    n = len(vals)
 
     i = int(n * split[0] / s)
-    j = int(n * split[1] / s)
+    j = i + int(n * split[1] / s)
 
-    train = norm[:i]
-    valid = norm[i:j]
-    tests = norm[j:]
+    train = vals[:i]
+    valid = vals[i:j]
+    tests = vals[j:]
 
     return train, valid, tests
