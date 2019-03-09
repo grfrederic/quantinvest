@@ -22,7 +22,7 @@ def _generator(dataset, seq_len=10, batch_size=200, batch_per_epoch=10):
     return gen
 
 
-def input_fn(dataset, seq_len=10, batch_size=200, batch_per_epoch=100, n_epoch=100):
+def input_fn(dataset, seq_len=10, batch_size=200, batch_per_epoch=100, n_epoch=10):
     _, n_features = dataset.shape
     gen = _generator(dataset, seq_len, batch_size, batch_per_epoch)
 

@@ -10,3 +10,4 @@ from models.simple import model_fn
 
 simple_classifier = tf.estimator.Estimator(model_fn=model_fn)
 simple_classifier.train(input_fn=lambda: input_fn(train))
+simple_classifier.evaluate(input_fn=lambda: input_fn(valid))

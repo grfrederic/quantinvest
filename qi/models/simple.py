@@ -34,8 +34,9 @@ def model_fn(features, labels, mode):
     dist_mean = dist_all[:, 0]
     dist_log_var = dist_all[:, 1]
     dist_var = tf.exp(dist_log_var)
+    dist_std = tf.exp(0.5 * dist_log_var)
 
-    loss = tf.reduce_mean(- dist_log_var - (labels - dist_mean)**2 / dist_var / 2)
+    loss = 1 - tf.reduce_mean(tf.exp(- (labels - dist_mean)**2 / dist_var / 2) / dist_std)
 
     # EVAL
     if mode == tf.estimator.ModeKeys.EVAL:
