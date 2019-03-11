@@ -1,0 +1,29 @@
+Informacje, źródła, odnośniki
+Brałem dane dla Polski, USA, Japonii, Świata zagregowanego(OECD) i Europy zagregowanej(EA19)
+
+wig20: 
+WIG20 daily closing price
+https://stooq.pl/q/d/?s=wig20
+
+gdp:
+GDP quaterly growth, percentage change wrt previous period
+https://data.oecd.org/gdp/quarterly-gdp.htm#indicator-chart
+suggested citation:
+OECD (2019), Quarterly GDP (indicator). doi: 10.1787/b86d1fc8-en (Accessed on 11 March 2019)
+
+unemployment:
+Monthly harmonised unemployment rates
+https://data.oecd.org/unemp/harmonised-unemployment-rate-hur.htm#indicator-chart
+suggested citation:
+OECD (2019), Harmonised unemployment rate (HUR) (indicator). doi: 10.1787/52570002-en (Accessed on 11 March 2019)
+
+irates:
+Short-term interest rates
+Short-term interest rates are based on three-month money market rates where available
+https://data.oecd.org/interest/short-term-interest-rates.htm
+suggested citation:
+OECD (2019), Short-term interest rates (indicator). doi: 10.1787/2cc37d77-en (Accessed on 11 March 2019)
+
+nyse:
+New York Stock Exchange Composite Index daily closing price
+https://quotes.wsj.com/index/NYA/historical-prices
