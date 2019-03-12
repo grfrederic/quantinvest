@@ -27,3 +27,11 @@ OECD (2019), Short-term interest rates (indicator). doi: 10.1787/2cc37d77-en (Ac
 nyse:
 New York Stock Exchange Composite Index daily closing price
 https://quotes.wsj.com/index/NYA/historical-prices
+
+data_with_features:
+ln_growth_X     - ln(v_t/v_{t-1}) where v_t is for X value at t
+ln_growth_fw_X  - abs of dot product of past week  values of ln_growth_X and complex exponent with period = 1 week
+ln_growth_fm_X  - abs of dot product of past month values of ln_growth_X and complex exponent with period = 1 month
+ln_rates_X      - ln(1+[short term intertest rate for X]/100)
+unemp_X         - monthly harmonised unemployment rates for X
+ln_gdp_growth_X - ln(v_t/v_{t-1}) where v_t is GDP for X
