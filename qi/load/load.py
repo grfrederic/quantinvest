@@ -7,7 +7,8 @@ from config import FUNDS
 # load data
 def load_data(split=(8, 1, 1)):
     data = pd.read_csv(FUNDS)
-    data.sort_values("time", inplace=True)
+    data.sort_values(by=["time"], inplace=True)
+    data.reset_index(drop=True, inplace=True)
 
     time = np.array(data["time"])
     vals = np.array(data.loc[:, data.columns != "time"])

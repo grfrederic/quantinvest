@@ -1,5 +1,6 @@
 # private data
 private/
+qi/training_checkpoints_*
 
 # datasets
 vae/data/

@@ -1,35 +1,34 @@
 import tensorflow as tf
-import numpy as np
+from utils.monthify import monthify
+from config import MONTH
 
 
-def _generator(dataset, seq_len=10, batch_size=200, batch_per_epoch=10):
-    month = 30
-    n, n_features = dataset.shape
-    true_seq_len = month * (seq_len + 2)
-
-    def gen():
-        for _ in range(batch_per_epoch):
-            batch = np.zeros((batch_size, seq_len+1, n_features, ))
-            for i in range(batch_size):
-                st = np.random.randint(0, n - true_seq_len)
-                month_averages = dataset[st:st+true_seq_len].reshape((-1, month, n_features, )).mean(axis=1)
-                batch[i] = np.log(month_averages[1:] / month_averages[:-1])
-
-            features = batch[:, :-1]
-            labels = batch[:, -1]
-            yield (features, labels)
-
-    return gen
+def split_input_target(chunk):
+    input_text = chunk[:-1]
+    target_text = chunk[1:]
+    return input_text, target_text
 
 
-def input_fn(dataset, seq_len=10, batch_size=200, batch_per_epoch=100, n_epoch=10):
-    _, n_features = dataset.shape
-    gen = _generator(dataset, seq_len, batch_size, batch_per_epoch)
+def train_input_fn(data,
+                   seq_length=10,
+                   batch_size=64):
 
-    shape_x = tf.TensorShape([batch_size, seq_len, n_features])
-    shape_y = tf.TensorShape([batch_size, n_features])
-    dataset = tf.data.Dataset.from_generator(
-        gen, (tf.float32, tf.float32), (shape_x, shape_y)
-    )
+    examples_per_epoch = 0
+    datasets = []
+    for i in range(MONTH):
+        mdata = monthify(data[i:]).astype('float32')
+        dataset = tf.data.Dataset.from_tensor_slices(mdata)
+        dataset = dataset.batch(seq_length + 1,
+                                drop_remainder=True)
+        dataset = dataset.map(split_input_target)
+        datasets.append(dataset)
+        examples_per_epoch += len(mdata)
 
-    return dataset.repeat(count=n_epoch)
+    dataset = datasets[0]
+    for d in datasets[1:]:
+        dataset = dataset.concatenate(d)
+
+    buffer_size = 10000
+    dataset = dataset.shuffle(buffer_size)
+    dataset = dataset.batch(batch_size, drop_remainder=True)
+    return dataset, examples_per_epoch
