@@ -1,15 +1,21 @@
 import tensorflow as tf
+import numpy as np
 from utils.monthify import monthify
 from config import MONTH
 
 
-def split_input_target(chunk):
-    input_text = chunk[:-1]
-    target_text = chunk[1:]
-    return input_text, target_text
+def splitter_fn(disc):
+    def splitter(chunk):
+        input_data = chunk[:-1]
+        target_data = chunk[1:]
+        target_data = tf.expand_dims(target_data, axis=-1)
+        target_data = tf.argmin(tf.abs(target_data - disc), axis=-1)
+        target_data = tf.one_hot(target_data, len(disc), axis=-1)
+        return input_data, target_data
+    return splitter
 
 
-def train_input_fn(data,
+def train_input_fn(data, disc,
                    seq_length=10,
                    batch_size=64):
 
@@ -20,7 +26,7 @@ def train_input_fn(data,
         dataset = tf.data.Dataset.from_tensor_slices(mdata)
         dataset = dataset.batch(seq_length + 1,
                                 drop_remainder=True)
-        dataset = dataset.map(split_input_target)
+        dataset = dataset.map(splitter_fn(disc))
         datasets.append(dataset)
         examples_per_epoch += len(mdata)
 
