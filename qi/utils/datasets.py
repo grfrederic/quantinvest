@@ -15,7 +15,7 @@ def splitter_fn(disc):
     return splitter
 
 
-def train_input_fn(data, disc,
+def train_input_fn(data, monthly_means, monthly_stds, disc,
                    seq_length=10,
                    batch_size=64):
 
@@ -23,6 +23,8 @@ def train_input_fn(data, disc,
     datasets = []
     for i in range(MONTH):
         mdata = monthify(data[i:]).astype('float32')
+        mdata -= monthly_means
+        mdata /= monthly_stds
         dataset = tf.data.Dataset.from_tensor_slices(mdata)
         dataset = dataset.batch(seq_length + 1,
                                 drop_remainder=True)

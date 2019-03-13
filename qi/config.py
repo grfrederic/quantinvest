@@ -7,7 +7,12 @@ DATA_DIR = os.path.join(ROOT_DIR, 'data')
 
 
 # the different datasets
-FUNDS = os.path.join(DATA_DIR, 'fundusze.csv')
+FUNDS = os.path.join(DATA_DIR, 'qi_fundusze.csv')
+NYSE = os.path.join(DATA_DIR, 'nyse.csv')
+UNEMPLOYMENT = os.path.join(DATA_DIR, 'unemployment.csv')
+WIG20 = os.path.join(DATA_DIR, 'wig20.csv')
+GDP = os.path.join(DATA_DIR, 'gdp.csv')
+IRATES = os.path.join(DATA_DIR, 'irates.csv')
 
 
 # constants

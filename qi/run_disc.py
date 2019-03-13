@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-from load.load import load_data
+from load.load_all import load_all
 from utils.monthify import monthify
 from utils.datasets import train_input_fn
 import models.gru_disc as gd
@@ -13,17 +13,12 @@ tf.enable_eager_execution()
 BATCH_SIZE = 64
 SEQ_LENGTH = 10
 TRAIN = False
-DISC = np.array([-0.04, -0.02, 0, 0.02, 0.04])
+DISC = np.array([-2.0, -1.0, 0.0, 1.0, 2.0])
 N_DISC = len(DISC)
 
 
-def discretize(value):
-    idx = (np.abs(DISC - value)).argmin()
-    return np.array([i == idx for i in range(N_DISC)])
-
-
 # load and split data
-train, valid, tests = load_data()
+train, tests, monthly_means, monthly_stds = load_all()
 n_features = train.shape[1]
 
 
@@ -35,11 +30,14 @@ if TRAIN:
     model.compile(optimizer=tf.train.AdamOptimizer(),
                   loss=gd.loss)
 
-    dataset, examples_per_epoch = train_input_fn(train, DISC)
+    dataset, examples_per_epoch = train_input_fn(train,
+                                                 monthly_means,
+                                                 monthly_stds,
+                                                 DISC)
 
     steps_per_epoch = examples_per_epoch // BATCH_SIZE
     history = model.fit(dataset.repeat(),
-                        epochs=30,
+                        epochs=3,
                         steps_per_epoch=steps_per_epoch,
                         callbacks=[gd.checkpoint_callback])
 
@@ -55,6 +53,8 @@ model.build(tf.TensorShape([1, None]))
 
 # GENERATING
 mtests = monthify(tests).astype('float32')
+mtests -= monthly_means
+mtests /= monthly_stds
 
 true = mtests[-10:]
 pred = gd.generate(model, DISC, start=mtests[:-10])
