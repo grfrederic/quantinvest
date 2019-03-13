@@ -1,0 +1,37 @@
+Informacje, źródła, odnośniki
+Brałem dane dla Polski, USA, Japonii, Świata zagregowanego(OECD) i Europy zagregowanej(EA19)
+
+wig20: 
+WIG20 daily closing price
+https://stooq.pl/q/d/?s=wig20
+
+gdp:
+GDP quaterly growth, percentage change wrt previous period
+https://data.oecd.org/gdp/quarterly-gdp.htm#indicator-chart
+suggested citation:
+OECD (2019), Quarterly GDP (indicator). doi: 10.1787/b86d1fc8-en (Accessed on 11 March 2019)
+
+unemployment:
+Monthly harmonised unemployment rates
+https://data.oecd.org/unemp/harmonised-unemployment-rate-hur.htm#indicator-chart
+suggested citation:
+OECD (2019), Harmonised unemployment rate (HUR) (indicator). doi: 10.1787/52570002-en (Accessed on 11 March 2019)
+
+irates:
+Short-term interest rates
+Short-term interest rates are based on three-month money market rates where available
+https://data.oecd.org/interest/short-term-interest-rates.htm
+suggested citation:
+OECD (2019), Short-term interest rates (indicator). doi: 10.1787/2cc37d77-en (Accessed on 11 March 2019)
+
+nyse:
+New York Stock Exchange Composite Index daily closing price
+https://quotes.wsj.com/index/NYA/historical-prices
+
+data_with_features:
+ln_growth_X     - ln(v_t/v_{t-1}) where v_t is X value at t
+ln_growth_fw_X  - abs of dot product of past week  values of ln_growth_X and complex exponent with period = 1 week
+ln_growth_fm_X  - abs of dot product of past month values of ln_growth_X and complex exponent with period = 1 month
+ln_rates_X      - ln(1+[short term intertest rate for X]/100)
+unemp_X         - monthly harmonised unemployment rates for X
+ln_gdp_growth_X - ln(1+[GDP %growth for X]/100)
