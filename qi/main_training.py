@@ -36,6 +36,6 @@ dataset, examples_per_epoch = train_input_fn(train,
 
 steps_per_epoch = examples_per_epoch // BATCH_SIZE
 history = model.fit(dataset.repeat(),
-                    epochs=3,
+                    epochs=10,
                     steps_per_epoch=steps_per_epoch,
                     callbacks=[gd.checkpoint_callback])

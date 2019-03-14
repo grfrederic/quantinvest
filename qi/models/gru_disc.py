@@ -40,10 +40,10 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 temperature = 1.0
 def generate(model, disc, start, num_generate=12):
     generated = []
+    input_eval = tf.expand_dims(start, 0)
 
     model.reset_states()
     for i in range(num_generate):
-        input_eval = tf.expand_dims(start, 0)
         pred = model(input_eval)
         pred = tf.squeeze(pred, 0)
         pred = pred / temperature
@@ -53,6 +53,24 @@ def generate(model, disc, start, num_generate=12):
         pred_id = tf.reshape(pred_id, shape=[-1, n_features])[-1].numpy()
         pred = disc[pred_id]
         input_eval = tf.expand_dims([pred], 0)
+        generated.append(pred)
+
+    return np.array(generated)
+
+
+def generate_many(model, disc, start, num_generate=12):
+    generated = []
+    input_eval = start
+    model.reset_states()
+    for i in range(num_generate):
+        pred = model(input_eval)
+        pred = pred / temperature
+        n_batch, n_seq, n_features, n_disc = pred.shape
+        pred_prep = tf.reshape(pred, shape=[-1, n_disc])
+        pred_id = tf.random.categorical(pred_prep, num_samples=1)
+        pred_id = tf.reshape(pred_id, shape=[n_batch, -1, n_features])[:, -1].numpy()
+        pred = disc[pred_id]
+        input_eval = tf.expand_dims(pred, 1)
         generated.append(pred)
 
     return np.array(generated)
