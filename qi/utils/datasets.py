@@ -21,7 +21,7 @@ def train_input_fn(data, monthly_means, monthly_stds, disc,
 
     examples_per_epoch = 0
     datasets = []
-    for i in range(MONTH):
+    for i in range(seq_length * MONTH):
         mdata = monthify(data[i:]).astype('float32')
         mdata -= monthly_means
         mdata /= monthly_stds

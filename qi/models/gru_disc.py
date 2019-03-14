@@ -38,8 +38,7 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 
 
 temperature = 1.0
-def generate(model, disc, start):
-    num_generate = 10
+def generate(model, disc, start, num_generate=12):
     generated = []
 
     model.reset_states()

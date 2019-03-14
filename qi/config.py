@@ -16,4 +16,4 @@ IRATES = os.path.join(DATA_DIR, 'irates.csv')
 
 
 # constants
-MONTH = 30
+MONTH = 5
