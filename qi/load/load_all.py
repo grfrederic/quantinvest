@@ -65,11 +65,15 @@ def load_all(split=0.8):
     nyse_arr = interpolate(nyse)
     unem_arr = interpolate(unem)
     wig_arr = interpolate(wig)
+    gdp_arr = interpolate(gdp)
+    irates_arr = interpolate(irates)
 
     all_arr = np.concatenate((funds_arr.T,
                               nyse_arr.T,
                               unem_arr.T,
-                              wig_arr.T)).T
+                              wig_arr.T,
+                              gdp_arr.T,
+                              irates_arr.T)).T
 
     m_all_arr = monthify(all_arr)
     monthly_means = np.mean(m_all_arr, axis=0)
