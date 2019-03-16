@@ -1,0 +1,7 @@
+['AP', 'ARR', 'ARW', 'G', 'OP', 'ORR', 'ORW']
+Dla poszczegółnych fundsów w okresie testowym prawdziwa wartość jest średnio odchylona od średniej przewidzianego rozkładu o tyle sd przewidzianego rozkładu
+[-0.6343776   0.35439846 -0.80597377 -2.735023   -1.1967088  -0.67920315
+ -0.44800282]
+I waha się obok tego o tyle sd przewidzianego rozkładu
+[0.67196906 0.3229566  0.46250904 0.42585108 0.41322282 0.36811662
+ 0.6429902 ]
