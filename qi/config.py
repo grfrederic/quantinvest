@@ -13,6 +13,8 @@ UNEMPLOYMENT = os.path.join(DATA_DIR, 'unemployment.csv')
 WIG20 = os.path.join(DATA_DIR, 'wig20.csv')
 GDP = os.path.join(DATA_DIR, 'gdp.csv')
 IRATES = os.path.join(DATA_DIR, 'irates.csv')
+USD = os.path.join(DATA_DIR, 'usd.csv')
+USDPLN = os.path.join(DATA_DIR, 'usdpln.csv')
 
 
 # constants
