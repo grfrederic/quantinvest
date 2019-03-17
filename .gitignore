@@ -119,3 +119,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# simulation results
+*.npy

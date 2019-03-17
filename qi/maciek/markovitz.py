@@ -11,7 +11,7 @@ def markovitz(data, target_return):
   for specified target rate of return  
   Columns in data represent assets, rows represent simulated returns
   '''
-  ef = EfficientFrontier(data.mean(), data.cov(), weight_bounds=(-1, 1))
+  ef = EfficientFrontier(data.mean(), data.cov(), weight_bounds=(0, 1))
   proportions = ef.efficient_return(target_return)
   mean, std, sharpe = ef.portfolio_performance(risk_free_rate=0, verbose=False)
   return proportions, mean, std
@@ -23,7 +23,7 @@ def plot_frontier(data, target_returns, labels):
   plots and returns them
   '''
   
-  data = pd.DataFrame(data=data.values, columns=labels)
+  data = pd.DataFrame(data=data, columns=labels)
   
   for col in data:
     m, s = data[col].mean(), data[col].std() 
@@ -31,14 +31,14 @@ def plot_frontier(data, target_returns, labels):
     plt.annotate(col, (s, m), fontsize='large')
   
   # optimize portfolios
-  results = [markovitz(data, x_) for x_ in x] 
+  results = list(markovitz(data, x) for x in target_returns)
 
   # plot frontier
   means = [z[1] for z in results]
   stds = [z[2] for z in results]
   plt.plot(stds, means)
-  plt.xlabel('std')
-  plt.ylabel('mean')
+  plt.xlabel('Standard deviation')
+  plt.ylabel('Expected yield')
   plt.grid()
   
   return results

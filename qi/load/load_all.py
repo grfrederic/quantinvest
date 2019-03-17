@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import numpy as np
 from scipy.interpolate import interp1d
-from config import FUNDS, NYSE, UNEMPLOYMENT, WIG20, GDP, IRATES
+from config import FUNDS, NYSE, UNEMPLOYMENT, WIG20, GDP, IRATES, USD, USDPLN
 from utils.monthify import monthify
 
 
@@ -21,6 +21,8 @@ def load_all(split=0.8):
     wig = load_one(WIG20)
     gdp = load_one(GDP)
     irates = load_one(IRATES)
+    usd = load_one(USD)
+    usdpln = load_one(USDPLN)
 
     START_DATE = max(
         funds["date"].min(),
@@ -28,7 +30,9 @@ def load_all(split=0.8):
         unem["date"].min(),
         wig["date"].min(),
         gdp["date"].min(),
-        irates["date"].min()
+        irates["date"].min(),
+        usd["date"].min(),
+        usdpln["date"].min(),
     )
 
     END_DATE = min(
@@ -37,7 +41,9 @@ def load_all(split=0.8):
         unem["date"].max(),
         wig["date"].max(),
         gdp["date"].max(),
-        irates["date"].max()
+        irates["date"].max(),
+        usd["date"].max(),
+        usdpln["date"].max(),
     )
 
     N = (END_DATE - START_DATE).days
@@ -53,6 +59,8 @@ def load_all(split=0.8):
     wig = recalc_date(wig)
     gdp = recalc_date(gdp)
     irates = recalc_date(irates)
+    usd = recalc_date(usd)
+    usdpln = recalc_date(usdpln)
 
     TIME = funds["date"]
     TIME = TIME[TIME <= N]
@@ -78,6 +86,8 @@ def load_all(split=0.8):
     wig_arr = interpolate(wig)
     gdp_arr = interpolate(gdp)
     irates_arr = interpolate(irates)
+    usd_arr = interpolate(usd)
+    usdpln_arr = interpolate(usdpln)
 
     #all_arr = funds_arr
     all_arr = np.concatenate((funds_arr.T,
@@ -85,7 +95,9 @@ def load_all(split=0.8):
                               unem_arr.T,
                               wig_arr.T,
                               gdp_arr.T,
-                              irates_arr.T)).T
+                              irates_arr.T,
+                              usd_arr.T,
+                              usdpln_arr.T)).T
 
     m_all_arr = monthify(all_arr)
     monthly_means = np.mean(m_all_arr, axis=0)
