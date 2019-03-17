@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import numpy as np
 from scipy.interpolate import interp1d
-from config import FUNDS, NYSE, UNEMPLOYMENT, WIG20, GDP, IRATES, USD, USDPLN
+from config import FUNDS, NYSE, UNEMPLOYMENT, WIG20, GDP, IRATES, USD, USDPLN, VIX
 from utils.monthify import monthify
 
 
@@ -23,6 +23,7 @@ def load_all(split=0.8):
     irates = load_one(IRATES)
     usd = load_one(USD)
     usdpln = load_one(USDPLN)
+    vix = load_one(VIX)
 
     START_DATE = max(
         funds["date"].min(),
@@ -33,6 +34,7 @@ def load_all(split=0.8):
         irates["date"].min(),
         usd["date"].min(),
         usdpln["date"].min(),
+        vix["date"].min(),
     )
 
     END_DATE = min(
@@ -44,6 +46,7 @@ def load_all(split=0.8):
         irates["date"].max(),
         usd["date"].max(),
         usdpln["date"].max(),
+        vix["date"].max(),
     )
 
     N = (END_DATE - START_DATE).days
@@ -61,6 +64,7 @@ def load_all(split=0.8):
     irates = recalc_date(irates)
     usd = recalc_date(usd)
     usdpln = recalc_date(usdpln)
+    vix = recalc_date(vix)
 
     TIME = funds["date"]
     TIME = TIME[TIME <= N]
@@ -88,6 +92,7 @@ def load_all(split=0.8):
     irates_arr = interpolate(irates)
     usd_arr = interpolate(usd)
     usdpln_arr = interpolate(usdpln)
+    vix_arr = interpolate(vix)
 
     #all_arr = funds_arr
     all_arr = np.concatenate((funds_arr.T,
@@ -95,9 +100,10 @@ def load_all(split=0.8):
                               unem_arr.T,
                               wig_arr.T,
                               gdp_arr.T,
-                              irates_arr.T,
-                              usd_arr.T,
-                              usdpln_arr.T)).T
+                              irates_arr.T)).T#,
+                              #usd_arr.T,
+                              #usdpln_arr.T,
+                              #vix_arr.T)).T
 
     m_all_arr = monthify(all_arr)
     monthly_means = np.mean(m_all_arr, axis=0)

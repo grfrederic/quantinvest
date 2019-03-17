@@ -15,7 +15,8 @@ GDP = os.path.join(DATA_DIR, 'gdp.csv')
 IRATES = os.path.join(DATA_DIR, 'irates.csv')
 USD = os.path.join(DATA_DIR, 'usd.csv')
 USDPLN = os.path.join(DATA_DIR, 'usdpln.csv')
+VIX = os.path.join(DATA_DIR, 'vix.csv')
 
 
 # constants
-MONTH = 5
+MONTH = 21
