@@ -11,7 +11,7 @@ def markovitz(data, target_return):
   for specified target rate of return  
   Columns in data represent assets, rows represent simulated returns
   '''
-  ef = EfficientFrontier(data.mean(), data.cov(), weight_bounds=(-1, 1))
+  ef = EfficientFrontier(data.mean(), data.cov(), weight_bounds=(0, 1))
   proportions = ef.efficient_return(target_return)
   mean, std, sharpe = ef.portfolio_performance(risk_free_rate=0, verbose=False)
   return proportions, mean, std
