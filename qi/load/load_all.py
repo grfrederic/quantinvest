@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 import numpy as np
 from scipy.interpolate import interp1d
 from config import FUNDS, NYSE, UNEMPLOYMENT, WIG20, GDP, IRATES
@@ -53,12 +54,22 @@ def load_all(split=0.8):
     gdp = recalc_date(gdp)
     irates = recalc_date(irates)
 
+    TIME = funds["date"]
+    TIME = TIME[TIME <= N]
+    TIME = TIME[TIME >= 0]
+    #days_after_start = TIME.iloc[int(len(TIME) * split)]
+    #print(len(TIME))
+    #print(START_DATE + datetime.timedelta(days=TIME.min()))
+    #print(START_DATE + datetime.timedelta(days=TIME.max()))
+    #print(START_DATE + datetime.timedelta(days=days_after_start))
+    #exit(0)
+
+    TIME = np.array(TIME)
     def interpolate(df):
         time = np.array(df["date"])
         vals = np.array(df.loc[:, df.columns != "date"])
         inter_fn = interp1d(time, vals.T)
-        time = np.arange(0, N+1)
-        vals = inter_fn(time).T
+        vals = inter_fn(TIME).T
         return vals
 
     funds_arr = interpolate(funds)
@@ -68,6 +79,7 @@ def load_all(split=0.8):
     gdp_arr = interpolate(gdp)
     irates_arr = interpolate(irates)
 
+    #all_arr = funds_arr
     all_arr = np.concatenate((funds_arr.T,
                               nyse_arr.T,
                               unem_arr.T,
@@ -80,7 +92,7 @@ def load_all(split=0.8):
     m_all_arr = m_all_arr - monthly_means
     monthly_stds = np.std(m_all_arr, axis=0)
 
-    s = int(N * split)
+    s = int(len(all_arr) * split)
     train = all_arr[:s]
     tests = all_arr[s:]
 

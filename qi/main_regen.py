@@ -43,19 +43,10 @@ mtests /= monthly_stds
 
 starts = []
 trues = []
-preds = []
 for st_idx in range(0, len(mtests) - 2*SEQ_LENGTH, 21 // MONTH):
     start = mtests[st_idx:st_idx+SEQ_LENGTH].copy()
     # to jest prawdziwy koniec historii
     true = mtests[st_idx+SEQ_LENGTH:st_idx+2*SEQ_LENGTH].copy()
-
-    # trajektorie
-    t0 = time.time()
-    batch = np.repeat([start], 1000, axis=0)
-    pred = gd.generate_many(model, DISC, start=batch, num_generate=SEQ_LENGTH)
-    pred = np.swapaxes(pred, 0, 1)
-    t1 = time.time()
-    print("generating 1000 traj.:", round(t1 - t0, 2), "s")
 
     start *= monthly_stds
     start += monthly_means
@@ -63,12 +54,8 @@ for st_idx in range(0, len(mtests) - 2*SEQ_LENGTH, 21 // MONTH):
     true *= monthly_stds
     true += monthly_means
 
-    pred *= monthly_stds
-    pred += monthly_means
-
     starts.append(start)
     trues.append(true)
-    preds.append(pred)
 
 name_end = "." + str(MONTH) + "_" + str(n_features) + ".npy"
 
@@ -81,8 +68,3 @@ trues = np.array(trues)
 np.save("true" + name_end, trues)
 print("saved trues, shape =", trues.shape)
 del trues
-
-preds = np.array(preds)
-np.save("preds" + name_end, preds)
-print("saved preds, shape =", preds.shape)
-del preds
